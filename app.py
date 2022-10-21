@@ -24,7 +24,7 @@ def about():
 
 @app.route('/create')
 def create():
-    return render_template('create`.html')
+    return render_template('create.html')
 
 
 if __name__ == "__main__":
