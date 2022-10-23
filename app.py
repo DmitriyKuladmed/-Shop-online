@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 from flask_sqlalchemy import *
 from datetime import datetime
 
@@ -22,9 +22,23 @@ def index():
 def about():
     return render_template('about.html')
 
-@app.route('/create')
+@app.route('/create', methods=['POST', 'GET'])
 def create():
-    return render_template('create.html')
+    if request.method == 'POST':
+        title = request.form['title']
+        price = request.form['price']
+        item_category = request.form['item_category']
+
+        item = Item(title=title, price=price, item_category=item_category)
+
+        try:
+            db.session.add(item)
+            db.session.commit()
+            return redirect('/')
+        except:
+            return "Произошла ошибка!"
+    else:
+        return render_template('create.html')
 
 
 if __name__ == "__main__":
